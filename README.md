@@ -96,4 +96,15 @@ Once we have selected certain information to filter and submitted, we can visual
 
 This is demonstrated as follows:
 
+![截屏2023-01-16 11 22 07](https://user-images.githubusercontent.com/72921749/212655362-6cc15e6c-96ec-496b-ba42-83516d1c73e3.png)
+
+This is our main page, at the first we have our filter for our report. We can choose the certain information for the filter or nothing "it will be showed as Any". Then we click the confirm button to show the chart of the series id that we have selected.
+
+If we have previously selected a filter with "any", that means our series id is not unique. We have to choose the series id that we want in the next page like following:
+
+![截屏2023-01-16 11 34 28](https://user-images.githubusercontent.com/72921749/212657913-c14e2dbd-6979-45e7-a3ee-bee6c26ba434.png)
+
+If the report has been visualied we can also choose the different type of charts. We made three charts and one table to show the information for the time series that we selected. We can also switch it.
+
+![截屏2023-01-16 11 35 51](https://user-images.githubusercontent.com/72921749/212658172-7dc22b4f-0fb5-4a59-8378-e3a5179d3440.png)
 

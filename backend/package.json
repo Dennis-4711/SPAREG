@@ -1,0 +1,35 @@
+{
+  "name": "spareg",
+  "version": "1.0.0",
+  "description": "Backend componente of the SPAREG software.",
+  "main": "server.js",
+  "scripts": {
+    "test": "test",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://Dennis-4711@github.com/Dennis-4711/SPAREG.git"
+  },
+  "keywords": [
+    "sport",
+    "athlete",
+    "report",
+    "data",
+    "science"
+  ],
+  "author": "Dennis Kasch",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Dennis-4711/SPAREG/issues"
+  },
+  "homepage": "https://github.com/Dennis-4711/SPAREG#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^6.8.1",
+    "nodemon": "^2.0.20"
+  }
+}

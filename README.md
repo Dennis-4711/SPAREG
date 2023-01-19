@@ -108,3 +108,9 @@ If the report has been visualied we can also choose the different type of charts
 
 ![截屏2023-01-16 11 35 51](https://user-images.githubusercontent.com/72921749/212658172-7dc22b4f-0fb5-4a59-8378-e3a5179d3440.png)
 
+Once we display the chart, we can add some information to the chart below. We can add the appropriate information in the text box below. We can save and change it at any time.
+
+![截屏2023-01-19 22 11 26](https://user-images.githubusercontent.com/72921749/213560535-8091e48d-3d19-4c54-8b8b-c89027cf8acb.png)
+
+For a dynamic data generation report, we can create several different reports, and by clicking the Create Report button we can reselect a specific filter to generate a new report. Of course, we can always delete reports or text boxes that we don't need. Note: When we delete the first report, all of our new reports will be deleted.
+![截屏2023-01-19 22 15 45](https://user-images.githubusercontent.com/72921749/213561549-cc6d4398-6093-4eee-a774-57af3a1629cf.png)

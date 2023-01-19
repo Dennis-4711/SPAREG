@@ -2,11 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import * as echarts from 'echarts';
 import {selectOptions} from "@testing-library/user-event/dist/select-options";
+import Button from '@mui/material/Button';
 
 
-class FilterMenu extends React.Component {
+
+class ReportPanel extends React.Component {
     constructor(props) {
         super(props);
+        this.elem_id = props.id;
         this.state = {
             series_meta: {},
             full_options: null,
@@ -18,6 +21,10 @@ class FilterMenu extends React.Component {
             current_series_ids: [],
             current_series_id: [],
             current_chart_type: "bar",
+            current_info: {
+                sum: null,
+                avg: null
+            },
             display_data: {},
             chart_mode: false
         }
@@ -27,22 +34,14 @@ class FilterMenu extends React.Component {
     render() {
         return (
             <div>
-                {/*click the create report will change to the filter site*/}
-                <div style={{margin: "1em", padding: "1em"}}>
-                    <button className={"btn btn-primary"} style={{width: "10em", height: "4em", fontSize: "1em",
-                        position: "relative", left: "-3em"}}
-                            onClick={() => this.setState({chart_mode: false})}>
-                        Create report
-                    </button>
-                </div>
+                 {/*click the create report will change to the filter site*/}
                 <div style={{borderRadius: "10px", padding: "2em", backgroundColor: "#aacccc"}}>
                     <div style={{display: this.state.chart_mode ? "none" : "block"}}>
                         <div style={{fontsize: "15px", margin: "1em"}}>Filter your time series</div>
                         <div style={{borderRadius: "10px", backgroundColor: "#ffffff"}}>
                             <div style={{display: "flex", flexDirection: "row", padding: "1em"}}>
-                                {/* select discpline with updates filter */}
                                 <label style={{margin: "1em", minWidth: "10em"}}>Discipline:</label>
-                                <select id={"select_discipline"} style={{margin: "1em", minWidth: "10em"}}
+                                <select id={"select_discipline" + this.elem_id.toString()} style={{margin: "1em", minWidth: "10em"}}
                                         onChange={(e) => {
                                             this.update_selection("discipline");
                                         }}>
@@ -52,7 +51,7 @@ class FilterMenu extends React.Component {
                             </div>
                             <div style={{display: "flex", flexDirection: "row", padding: "1em"}}>
                                 <label style={{margin: "1em", minWidth: "10em"}}>Space:</label>
-                                <select id={"select_space"} style={{margin: "1em", minWidth: "10em"}}
+                                <select id={"select_space" + this.elem_id.toString()} style={{margin: "1em", minWidth: "10em"}}
                                         onChange={(e) => {
                                             this.update_selection("space");
                                         }}>
@@ -63,7 +62,7 @@ class FilterMenu extends React.Component {
                             </div>
                             <div style={{display: "flex", flexDirection: "row", padding: "1em"}}>
                                 <label style={{margin: "1em", minWidth: "10em"}}>Athlete id:</label>
-                                <select id={"select_athlete_id"} style={{margin: "1em", minWidth: "10em"}}
+                                <select id={"select_athlete_id" + this.elem_id.toString()} style={{margin: "1em", minWidth: "10em"}}
                                         onChange={(e) => {
                                             this.update_selection("athlete_id");
                                         }}>
@@ -73,7 +72,7 @@ class FilterMenu extends React.Component {
                             </div>
                         </div>
                         <div style={{display: "flex", justifyContent: "right", padding: "1em"}}>
-                            <button style={{fontSize: "16px"}} onClick={() => this.confirm_filter()}>Confirm</button>
+                            <Button variant="contained" style={{fontSize: "16px",backgroundColor:"blue"}} onClick={() => this.confirm_filter()}>Confirm</Button>
                         </div>
                     </div>
                     {/* if we confirm our filter we can select the type of chart and the corresponding seried id for the filter */}
@@ -81,7 +80,7 @@ class FilterMenu extends React.Component {
                         <div style={{display: "flex", fontSize: "14px"}}>
                             <div>
                                 <label style={{margin: "1em"}}>Chart type</label>
-                                <select id={"chart_type_select"} style={{margin: "1em"}}
+                                <select id={"chart_type_select" + this.elem_id.toString()} style={{margin: "1em"}}
                                         onClick={e => {
                                             this.setState({current_chart_type: e.target.value});
                                             this.draw_chart(this.state.current_series_id, e.target.value)}}>
@@ -93,7 +92,7 @@ class FilterMenu extends React.Component {
                             </div>
                             <div>
                                 <label style={{margin: "1em"}}>Series id</label>
-                                <select id={"series_id_select"} style={{margin: "1em"}}
+                                <select id={"series_id_select" + this.elem_id.toString()} style={{margin: "1em"}}
                                         onClick={e => {
                                             this.setState({current_series_id: e.target.value});
                                             this.draw_chart(e.target.value, this.state.current_chart_type)}
@@ -103,9 +102,18 @@ class FilterMenu extends React.Component {
                                 </select>
                             </div>
                         </div>
-                        <div id={"chart-container"} style={{width: "600px", height: "500px",
-                            display: this.state.current_chart_type === "table"?"none":"block"}}/>
-                        <div id={"table-container"}/>
+                        <div style={{display: "flex"}}>
+                            <div id={"chart-container-" + this.elem_id.toString()} style={{width: "700px", height: "500px",
+                                display: this.state.current_chart_type === "table"?"none":"block"}}/>
+                            <div id={"table-container-" + this.elem_id.toString()} style={{margin: "2em"}}/>
+                            <div >
+                                <div id={"infobox" + this.elem_id.toString()}
+                                     style={{width: "10em", border: "1px solid #228877", borderRadius: "5px",margin:"0.1em"}}>
+                                    <div style={{margin: "1em"}}>Total: {this.state.current_info.sum}</div>
+                                    <div style={{margin: "1em"}}>Average: {this.state.current_info.avg}</div>
+                                </div>
+                                    </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -113,16 +121,15 @@ class FilterMenu extends React.Component {
     }
 
     get_selected_value(selector_id) {
-        const e = document.getElementById(selector_id);
+        const e = document.getElementById(selector_id + this.elem_id.toString());
         console.log(e);
         console.log(e.value);
         return e.value;
     }
-
     // query the information from the api 
 
     query_series() {
-        fetch("http://localhost:5000/time_series").then(res => res.json()).then(res => {
+        fetch("http://127.0.0.1:5000/time_series").then(res => res.json()).then(res => {
             const series_meta = res;
             console.log(series_meta);
             this.setState({series_meta: series_meta});
@@ -196,6 +203,7 @@ class FilterMenu extends React.Component {
         this.setState({current_options: available_options});
     }
 
+
 // through the information that we filter from discipline, space and athlete id we receive our series id
     confirm_filter() {
         const select_discipline = this.get_selected_value("select_discipline");
@@ -226,9 +234,8 @@ class FilterMenu extends React.Component {
         this.draw_chart(series_ids[0], "bar");
     }
     // draw the chart with echart libary
-
     async draw_chart(series_id, chart_type) {
-        let series_data = await fetch("http://localhost:5000/time_series/" + series_id.toString())
+        let series_data = await fetch("http://127.0.0.1:5000/time_series/" + series_id.toString())
         series_data = await series_data.json();
         series_data = series_data[0];
         console.log("Series data: ", series_data);
@@ -240,11 +247,30 @@ class FilterMenu extends React.Component {
             x_labels.push(item.timestamp.slice(0, 8));
             data_list.push(item.value);
         }
+        let sum = 0;
+        for (const d of data_list) {
+            sum += d;
+        }
+
+        this.setState({
+            current_info: {
+                sum: sum,
+                avg: sum / data_list.length
+            }
+        })
+
+        let avg_list = [];
+        for (const i in series_data.vector) {
+            avg_list.push(sum / data_list.length);
+        }
+
+
         console.log("x_labels: ", x_labels);
         console.log("data: ", data_list);
-        const chart = echarts.init(document.getElementById('chart-container'));
+
+        const chart = echarts.init(document.getElementById('chart-container-' + this.elem_id.toString()));
         chart.clear()
-        document.getElementById('table-container').innerHTML = "";
+        document.getElementById('table-container-' + this.elem_id.toString()).innerHTML = "";
         if (chart_type === "bar") {
             chart.setOption({
                 title: {
@@ -261,13 +287,19 @@ class FilterMenu extends React.Component {
                         name: series_data.discipline + " (" + series_data.space + ")",
                         type: 'bar',
                         data: data_list
+                    },
+                    {
+                        name: "Avg",
+                        type: "line",
+                        lineStyle: {type: "dashed", color: "#eeeeee"},
+                        data: avg_list
                     }
                 ]
             });
         } else if (chart_type === "line") {
             chart.setOption({
                 title: {
-                    text: 'Report for athlete id:' + series_data.athlete_id.toString() + " of " +
+                    text: 'Report for athelete id:' + series_data.athlete_id.toString() + " of " +
                         series_data.discipline + " (" + series_data.space + ")"
                 },
                 tooltip: {},
@@ -280,6 +312,12 @@ class FilterMenu extends React.Component {
                         name: series_data.discipline + " (" + series_data.space + ")",
                         type: 'line',
                         data: data_list
+                    },
+                    {
+                        name: "Avg",
+                        type: "line",
+                        lineStyle: {type: "dashed", color: "#eeeeee"},
+                        data: avg_list
                     }
                 ]
             });
@@ -289,7 +327,7 @@ class FilterMenu extends React.Component {
             console.log("Scatter:", scatter_data);
             chart.setOption({
                 title: {
-                    text: 'Report for athlete id:' + series_data.athlete_id.toString() + " of " +
+                    text: 'Report for athelete id:' + series_data.athlete_id.toString() + " of " +
                         series_data.discipline + " (" + series_data.space + ")"
                 },
                 tooltip: {},
@@ -302,6 +340,12 @@ class FilterMenu extends React.Component {
                         symbolSize: 20,
                         data: scatter_data,
                         type: 'scatter'
+                    },
+                    {
+                        name: "Avg",
+                        type: "line",
+                        lineStyle: {type: "dashed", color: "#eeeeee"},
+                        data: avg_list
                     }
                 ]
             });
@@ -317,7 +361,7 @@ class FilterMenu extends React.Component {
             }
             let table_content =
                 <div>
-                    <h3>{'Report for athlete id:' + series_data.athlete_id.toString() + " of " +
+                    <h3>{'Report for athelete id:' + series_data.athlete_id.toString() + " of " +
                         series_data.discipline + " (" + series_data.space + ")"}</h3>
                     <table style={table_style}>
                         <tr>
@@ -330,11 +374,84 @@ class FilterMenu extends React.Component {
                             </tr>)}
                     </table>
                 </div>
-            const root = ReactDOM.createRoot(document.getElementById("table-container"));
+            const root = ReactDOM.createRoot(document.getElementById("table-container-" + this.elem_id.toString()));
             root.render(table_content);
         }
     }
 }
 
+
+class PageContainer extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            panels: []
+        }
+    }
+
+    render() {
+        return <div style={{margin: "1em", padding: "1em", minWidth: "50em"}}>
+            <Button className={"btn btn-primary"} style={{margin: "1em", width: "10em", height: "4em", fontSize: "1em",
+                position: "relative", left: "-3em", color:"#aacccc", border:"1px solid #aacccc"}}
+                    onClick={() => {
+                        let panels = this.state.panels;
+                        panels.push({html: <ReportPanel id={panels.length}/>, state: 0})
+                        this.setState({panels: panels});
+                    }}>
+                Create report
+            </Button>
+            <div id={"panel-container"}>
+                {this.state.panels.map((v,i)=><div style={{margin: "1em", padding: "1em"}}>
+                    {v.html}
+                    <div style={{padding: "1em", display: "flex"}}>
+                        <Button variant="contained" style={{display: this.state.panels[i].state === 0?'block':'none', fontSize: "10px",backgroundColor:"#aacccc"}} onClick={
+                            ()=>{
+                                let panels = this.state.panels;
+                                panels[i].state = 1;
+                                this.setState({panels: panels});
+                            }
+                        }>
+                            Add text
+                        </Button>
+                        <div style={{display: this.state.panels[i].state === 0?'none':'block'}} >
+                            <textarea  style={{width: "1000px", height:"20vh",fontSize: "22px", boxShadow: "none",
+                                border: this.state.panels[i].state === 1?"1px solid grey":"none",borderRadius:"12px",marginLeft:"-15px"}}
+                                readOnly={this.state.panels[i].state === 2}/>
+                            <div>
+                            <Button variant="contained" style={{fontSize: "10px",backgroundColor:"#aacccc"}} onClick={
+                                ()=>{
+                                    let panels = this.state.panels;
+                                    if (panels[i].state === 1) panels[i].state = 2;
+                                    else if (panels[i].state === 2) panels[i].state = 1;
+                                    this.setState({panels: panels});
+                                }
+                            }>{this.state.panels[i].state === 1?"Save":"Edit"}</Button>
+                            <Button variant="contained"  style={{fontSize: "10px", backgroundColor:"red"}} onClick={
+                                ()=>{
+                                    let panels = this.state.panels;
+                                    panels[i].state = 0;
+                                    this.setState({panels: panels});
+                                }
+                            }>Close</Button>
+                            </div>
+                        </div>
+                    </div>
+                    <Button variant="contained" style={{backgroundColor: "red"}} onClick={
+                        ()=>{
+                            let panels = this.state.panels;
+                            panels = panels.splice(0, i);
+                            this.setState({panels: panels})
+                        }
+                    }>
+                        Close report
+                    </Button>
+                </div>)}
+            </div>
+        </div>
+    }
+}
+
+
+
 const root = ReactDOM.createRoot(document.getElementById("main-container"));
-root.render(<FilterMenu/>);
+root.render(<PageContainer/>);

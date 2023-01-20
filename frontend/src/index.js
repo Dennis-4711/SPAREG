@@ -398,7 +398,7 @@ class PageContainer extends React.Component {
                         panels.push({html: <ReportPanel id={panels.length}/>, state: 0})
                         this.setState({panels: panels});
                     }}>
-                Create report
+                Add Element
             </Button>
             <div id={"panel-container"}>
                 {this.state.panels.map((v,i)=><div style={{margin: "1em", padding: "1em"}}>
@@ -443,7 +443,7 @@ class PageContainer extends React.Component {
                             this.setState({panels: panels})
                         }
                     }>
-                        Close report
+                        Remove Element
                     </Button>
                 </div>)}
             </div>

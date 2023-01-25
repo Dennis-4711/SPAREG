@@ -33,7 +33,11 @@ const time_series_schema = new Schema({
     vector: {
         type: [vectorSchema],
         required: true
-    }              
+    },
+    targetValue: {
+        type: Number,
+        required: true
+    }       
 });
 
 const time_series = mongoose.model('time_series', time_series_schema);

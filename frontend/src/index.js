@@ -111,6 +111,7 @@ class ReportPanel extends React.Component {
                                      style={{width: "10em", border: "1px solid #228877", borderRadius: "5px",margin:"0.1em"}}>
                                     <div style={{margin: "1em"}}>Total: {this.state.current_info.sum}</div>
                                     <div style={{margin: "1em"}}>Average: {this.state.current_info.avg}</div>
+                                    <div style={{margin: "1em"}}>Target: {Math.round(this.state.display_data.targetValue*100)/100}</div>
                                 </div>
                                     </div>
                         </div>
@@ -251,17 +252,18 @@ class ReportPanel extends React.Component {
         for (const d of data_list) {
             sum += d;
         }
+        //sum = Math.round(sum*100)/sum
 
         this.setState({
             current_info: {
-                sum: sum,
-                avg: sum / data_list.length
+                sum: sum.toFixed(2),
+                avg: (sum / data_list.length).toFixed(2)
             }
         })
 
-        let avg_list = [];
+        let targetValue = [];
         for (const i in series_data.vector) {
-            avg_list.push(sum / data_list.length);
+            targetValue.push(series_data.targetValue);
         }
 
 
@@ -289,10 +291,10 @@ class ReportPanel extends React.Component {
                         data: data_list
                     },
                     {
-                        name: "Avg",
+                        name: "Target",
                         type: "line",
-                        lineStyle: {type: "dashed", color: "#eeeeee"},
-                        data: avg_list
+                        lineStyle: {type: "dashed", color: "red"},
+                        data: targetValue
                     }
                 ]
             });
@@ -314,10 +316,10 @@ class ReportPanel extends React.Component {
                         data: data_list
                     },
                     {
-                        name: "Avg",
+                        name: "Target",
                         type: "line",
-                        lineStyle: {type: "dashed", color: "#eeeeee"},
-                        data: avg_list
+                        lineStyle: {type: "dashed", color: "red"},
+                        data: targetValue
                     }
                 ]
             });
@@ -342,10 +344,10 @@ class ReportPanel extends React.Component {
                         type: 'scatter'
                     },
                     {
-                        name: "Avg",
+                        name: "Target",
                         type: "line",
-                        lineStyle: {type: "dashed", color: "#eeeeee"},
-                        data: avg_list
+                        lineStyle: {type: "dashed", color: "red"},
+                        data: targetValue
                     }
                 ]
             });
@@ -367,10 +369,14 @@ class ReportPanel extends React.Component {
                         <tr>
                             <th style={td_style}>Date</th>
                             <th style={td_style}>Value</th>
+                            <th style={td_style}>Diff (value-target value)</th>
                         </tr>
                         {[...data_list.keys()].map(
                             (i)=><tr>
                                 <td style={td_style}>{x_labels[i]}</td><td style={td_style}>{data_list[i]}</td>
+                                <td style={{...td_style,color:data_list[i]-series_data.targetValue<0?'red':'blue'}}>
+                                {Math.round((data_list[i]-series_data.targetValue)*100)/100}
+                                </td>
                             </tr>)}
                     </table>
                 </div>

@@ -420,7 +420,7 @@ class PageContainer extends React.Component {
                             Add text
                         </Button>
                         <div style={{display: this.state.panels[i].state === 0?'none':'block'}} >
-                            <textarea  style={{width: "1000px", height:"20vh",fontSize: "22px", boxShadow: "none",
+                            <textarea  style={{width: "1000px", height:"10vh",fontSize: "22px", boxShadow: "none",
                                 border: this.state.panels[i].state === 1?"1px solid grey":"none",borderRadius:"12px",marginLeft:"-15px"}}
                                 readOnly={this.state.panels[i].state === 2}/>
                             <div>

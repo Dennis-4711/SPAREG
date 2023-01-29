@@ -104,10 +104,19 @@ For a dynamic data generation report, we can create several different reports, a
 
 ## Section 4: Choice of Database
 
+The use of MongoDB was mandatory. The reason for that is probably that time series data can easily be handled in a JSON format.
+
 ## Section 5: Implementation of Data Model and Database
+
+The data model was implemented with JSON documents as described in section 2. The example data was added manually.
+
+The database was implemented as Atlas MongoDB Database in an Atlas cloud environment. The connection is established with NodeJS using the mongoose module. The mongoose schema can be seen in /backend/models/time_series.model.js.
 
 ## Section 6: API
 
+The file /backend/server.js is the entry point for the backend and establishes the connection with the database with a given URI from the Atlas cloud environemnt. After successfully establishing a connection, the endpoints /time_series, /disciplines, /spaces and /athletes are added to the server. The exact implementation of the endpoints can be seen in the files /backend/routes/, whereby only the endpoint /time_series has a more complex implementation for the combination of different filters for discipline, space and athlete and an endpoint for the full data of a single time series.
+
+The following is a functional description of all available endpoints, that are necessary for filtering and display of time series data in the frontend:
 * GET /api/athletes: returns a list of available athletes
 * GET /api/disciplines: returns set of all available disciplines
 * GET /api/spaces: returns set of all available spaces

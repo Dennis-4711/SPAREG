@@ -124,4 +124,4 @@ The following is a functional description of all available endpoints, that are n
     * (optional, query, array of integers) athletes[]: filter returned time series by athletes
     * (optional, query, array of strings) disciplines[]: filter returned time series by disciplines
     * (optional, query, array of strings) spaces[]: filter returned time series by spaces
-* GET /api/time_series/{id}: returns all data about a single time series, data vactor **included**
+* GET /api/time_series/{id}: returns all data about a single time series, data vector **included**

@@ -81,26 +81,27 @@ For the implementation of the interface we use **React** as our framework.
 When we create a report , we can filter different information by different messages such as: **displine**, **space** and **athlete_id**. By selecting the information we can get the corresponding time series number.
 Once we have selected certain information to filter and submitted, we can visualise our filtered time series data in different ways. In this case we use the react library **"echart"** to present three different charts and a table. The charts are: **bar chart**, **line chart** and **swarm chart**.
 
-This is demonstrated as follows:
+As shown in Figure 1, when we enter the interface of our Athlete Report, the first thing that appears in front of us is a button names "add element", if we click the button it will show S a filter list. Here we can select the specific discipline, space or athleteid of the time series we need, as shown in the figure we can select specific information for each type or none of them (keeping Any unchanged). Each data we select will be changed according to the previous data. For example, if I select basketball in the discpline list, then the next space selection will only show the basketball measurements such as scores and the next athlete id will only show the ID of the athlete playing basketball.
+When we are done with the selection, click on the confirm button to generate a chart or table with the serial numbers of the information we have selected. Note: If we do not select any of the three types, that is, if we select any of the three types, then all the time series will be displayed. At this point the user needs to choose which chart he wants to see.
+![Interface](https://user-images.githubusercontent.com/72921749/215332616-3f0e864d-49db-4d07-9713-93abd964cdfe.png)
+<img width="398" alt="basketball" src="https://user-images.githubusercontent.com/72921749/215332623-7c836511-28ef-4f6c-bdfd-052777bdedf8.png">
+Once we click on the data we want by filter and click submit, our dashboard will display our data. Here we can choose different types of charts to display, such as: bar chart, line chart, swarm polt or table to show our selected time series. If we didn't select each filter when we selected it earlier (which is the case with any) then there is a possibility of matching multiple time series ids, then the user needs to select the id of the time series he wants to visualize . As shown in the figure , I only selected discpline is weightlfting, but for space and athlete ids I did not select. So when I generate the chart, it will automatically select the smallest time series id to generate, and of course I can switch the time series id on the top.
 
-![截屏2023-01-16 11 22 07](https://user-images.githubusercontent.com/72921749/212655362-6cc15e6c-96ec-496b-ba42-83516d1c73e3.png)
+![selectid](https://user-images.githubusercontent.com/72921749/215332648-5ec20585-39ed-4924-a9d9-cd9c3ca0ba9d.png)
 
-This is our main page, at the first we have our filter for our report. We can choose the certain information for the filter or nothing "it will be showed as Any". Then we click the confirm button to show the chart of the series id that we have selected.
+ As our task was to implement a dynamic report for the athletes, we also added a text box (just like in the figure 4 to help the athletes to add additional information when they see their sports data, and of course they can delete or modify the text they add.
+ ![addtext](https://user-images.githubusercontent.com/72921749/215332673-2d0fe942-180a-47b7-ac0b-1edc84f9ee45.png)
+ 
+ As the title says, this is an athlete's report, so when we click on the add element we can always add a visual graph of the athlete. As well as we one can remove it at any time as soon as we click on the remove element (As shown in Figure 5.
+ 
+ ![addelement](https://user-images.githubusercontent.com/72921749/215332705-48c6e277-3ffe-47e2-a89c-678c74b5b051.png)
+ 
+ As you can see, there is a red line in our chart. And this shows our targetvalue. Each data has a targetvalue which means what score should the athlete reach or what kg should the athlete have. With the targetvalue we can clear see which timeseries value has reached the target and wich not. Also we add the total number and the average number as label beside our chart as the addtional information for the chart. 
+For the form of the table (As shown in Figure) we can't use the line to show the target value. So we just add a new coloum which show the difference for each time series value and the targetvalue. Wenn the time series value is lower than the targetValue it will be showed in red and otherwise it will be showed in blue.
 
-If we have previously selected a filter with "any", that means our series id is not unique. We have to choose the series id that we want in the next page like following:
+![table](https://user-images.githubusercontent.com/72921749/215332739-bbe15f64-e193-4810-846c-6bafc04a1b8e.png)
 
-![截屏2023-01-16 11 34 28](https://user-images.githubusercontent.com/72921749/212657913-c14e2dbd-6979-45e7-a3ee-bee6c26ba434.png)
 
-If the report has been visualied we can also choose the different type of charts. We made three charts and one table to show the information for the time series that we selected. We can also switch it.
-
-![截屏2023-01-16 11 35 51](https://user-images.githubusercontent.com/72921749/212658172-7dc22b4f-0fb5-4a59-8378-e3a5179d3440.png)
-
-Once we display the chart, we can add some information to the chart below. We can add the appropriate information in the text box below. We can save and change it at any time.
-
-![截屏2023-01-19 22 11 26](https://user-images.githubusercontent.com/72921749/213560535-8091e48d-3d19-4c54-8b8b-c89027cf8acb.png)
-
-For a dynamic data generation report, we can create several different reports, and by clicking the Create Report button we can reselect a specific filter to generate a new report. Of course, we can always delete reports or text boxes that we don't need. Note: When we delete the first report, all of our new reports will be deleted.
-![截屏2023-01-19 22 15 45](https://user-images.githubusercontent.com/72921749/213561549-cc6d4398-6093-4eee-a774-57af3a1629cf.png)
 
 ## Section 4: Choice of Database
 

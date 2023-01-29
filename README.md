@@ -112,6 +112,8 @@ The data model was implemented with JSON documents as described in section 2. Th
 
 The database was implemented as Atlas MongoDB Database in an Atlas cloud environment. The connection is established with NodeJS using the mongoose module. The mongoose schema can be seen in /backend/models/time_series.model.js.
 
+Example data is availaible as a csv dump in /docs/exampleData.
+
 ## Section 6: API
 
 The file /backend/server.js is the entry point for the backend and establishes the connection with the database with a given URI from the Atlas cloud environemnt. After successfully establishing a connection, the endpoints /time_series, /disciplines, /spaces and /athletes are added to the server. The exact implementation of the endpoints can be seen in the files /backend/routes/, whereby only the endpoint /time_series has a more complex implementation for the combination of different filters for discipline, space and athlete and an endpoint for the full data of a single time series.

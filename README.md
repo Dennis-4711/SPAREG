@@ -15,21 +15,19 @@ and certain athlete id.
 * The report is a component of its own that initialized with set of athlete IDs and set of chart, table and text components.
 * Using the same principle develop a report page for admins which serves as dashboard with 3 types of charts and tables.
 
-## Use Case Diagram
+## Section 1: Use Case Diagram
 
-![use_case](https://user-images.githubusercontent.com/29735893/209785826-6e5e9bee-8122-472b-8731-b5afa6b9d611.png)
+SPAREG offers the functionality to create reports for sport athletes. When a user wants to create such a report he or she **can** add an element. To make the selection of time series easier, the user can filter the available time series by discipline, space or athlete. Only the time series that match the chosen filters are being listed for the element.
 
-SPAREG offers the functionality to create reports for sport athletes. When a user wants to create such a report he or she **can** filter the available time series by discipline, space or athlete. This functionality allows easier selection of a time series.
+After filtering, the type of the element and the exact time series to be shown can be chosen. When a series is chosen, its data is displayed in the selected format and a target value is visualized. After adding an element to the report it is still possible to switch the type or time series and the elements will adapt dynamically. In addition, it is also possible to remove elements.
 
-In contrast, the selection a time series is **mandatory** to be able to add elements to the report. After a time series was selected, a user can add elements such as a text, table or a chart to the report. When doing so the properties of an element needs to be defined. Properties for example can be decisions like how many/what measurements from the selected time series are considered, if and how an average is being calculated and displayed or the layout of a table or chart.
+![use_case](https://user-images.githubusercontent.com/29735893/215329317-2d6d2eb8-853e-43a5-b20a-64e0c016e4ec.png)
 
-After adding elements to the report it is still possible to switch the time series and the elements will adapt dynamically. In addition, it is also possible to remove elements.
+## Section 2: Data Model
 
-## Database and Data Model
+The data model holds the data in JSON format within a MongoDB database.
 
-The SPAREG software uses **MongoDB** as database management system. The database is hosted as a **MongoDB Atlas Cloud** database and has a single collection called "time_series". The time series documents have the following data model:
-
-![data_model](https://user-images.githubusercontent.com/29735893/209586203-30d42f0c-1b6a-4b80-a231-a830a2af4de0.png)
+![data_model](https://user-images.githubusercontent.com/29735893/215329486-674b9937-89b6-4c6e-9df8-101c362b9126.png)
 
 * **series_id**: Primary key of a time series
 * **athlete_id**: Foreign key to refer to a specific athlete
@@ -40,6 +38,10 @@ The SPAREG software uses **MongoDB** as database management system. The database
 * **space**: Name of a space the time series does belong to.  
 
     *Example values: "Bodyweight in KG", "Scored Points", "Weight lifted in KG"*
+    
+* **targetValue**: A set integer value for the data points to be compared with. It is shown either as line in a selected graphs or as difference within a table.
+
+   *Example values: 15, 75, 80*
 
 * **vector**: The vector does hold the actual measurements and timestamps for a time series.  
 
@@ -62,6 +64,7 @@ The SPAREG software uses **MongoDB** as database management system. The database
   "athlete_id": 51,
   "discipline": "Basketball",
   "space": "Scored Points",
+  "targetValue": 12,
   "vector": [  
     { "timestamp": "17.07.22T10:29:11", "value": 8},  
     { "timestamp": "14.08.22T07:32:45", "value": 11},  
@@ -72,23 +75,7 @@ The SPAREG software uses **MongoDB** as database management system. The database
 }
 ```
 
-## API
-
-* GET /api/series: returns list of available time series
-    * (optional, query, integer) limit: limit amount of returned series
-    * (optional, query, integer) offset: offeset for returned time series
-    * (optional, query, array of integers) athletes[]: filter returned time series by athletes
-    * (optional, query, array of strings) disciplines[]: filter returned time series by disciplines
-    * (optional, query, array of strings) spaces[]: filter returned time series by spaces
-* GET /api/athletes: returns a list of available athletes
-    * (optional, query, integer) limit: limit amount of returned athletes
-    * (optional, query, integer) offset: offset for returned athletes
-* GET /api/disciplines: returns set of all available disciplines
-* GET /api/spaces: returns set of all available spaces
-
-To be continued...
-
-## GUI
+## Section 3: User Interface
 
 For the implementation of the interface we use **React** as our framework.
 When we create a report , we can filter different information by different messages such as: **displine**, **space** and **athlete_id**. By selecting the information we can get the corresponding time series number.
@@ -114,3 +101,27 @@ Once we display the chart, we can add some information to the chart below. We ca
 
 For a dynamic data generation report, we can create several different reports, and by clicking the Create Report button we can reselect a specific filter to generate a new report. Of course, we can always delete reports or text boxes that we don't need. Note: When we delete the first report, all of our new reports will be deleted.
 ![截屏2023-01-19 22 15 45](https://user-images.githubusercontent.com/72921749/213561549-cc6d4398-6093-4eee-a774-57af3a1629cf.png)
+
+## Section 4: Choice of Database
+
+The use of MongoDB was mandatory. The reason for that is probably that time series data can easily be handled in a JSON format.
+
+## Section 5: Implementation of Data Model and Database
+
+The data model was implemented with JSON documents as described in section 2. The example data was added manually.
+
+The database was implemented as Atlas MongoDB Database in an Atlas cloud environment. The connection is established with NodeJS using the mongoose module. The mongoose schema can be seen in /backend/models/time_series.model.js.
+
+## Section 6: API
+
+The file /backend/server.js is the entry point for the backend and establishes the connection with the database with a given URI from the Atlas cloud environemnt. After successfully establishing a connection, the endpoints /time_series, /disciplines, /spaces and /athletes are added to the server. The exact implementation of the endpoints can be seen in the files /backend/routes/, whereby only the endpoint /time_series has a more complex implementation for the combination of different filters for discipline, space and athlete and an endpoint for the full data of a single time series.
+
+The following is a functional description of all available endpoints, that are necessary for filtering and display of time series data in the frontend:
+* GET /api/athletes: returns a list of available athletes
+* GET /api/disciplines: returns set of all available disciplines
+* GET /api/spaces: returns set of all available spaces
+* GET /api/time_series: returns list of available time series, data vector **not included**
+    * (optional, query, array of integers) athletes[]: filter returned time series by athletes
+    * (optional, query, array of strings) disciplines[]: filter returned time series by disciplines
+    * (optional, query, array of strings) spaces[]: filter returned time series by spaces
+* GET /api/time_series/{id}: returns all data about a single time series, data vactor **included**

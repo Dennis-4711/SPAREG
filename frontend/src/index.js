@@ -79,7 +79,7 @@ class ReportPanel extends React.Component {
                     <div style={{display: this.state.chart_mode ? "block" : "none"}}>
                         <div style={{display: "flex", fontSize: "14px"}}>
                             <div>
-                                <label style={{margin: "1em"}}>Chart type</label>
+                                <label style={{margin: "1em"}}>Element type</label>
                                 <select id={"chart_type_select" + this.elem_id.toString()} style={{margin: "1em"}}
                                         onClick={e => {
                                             this.setState({current_chart_type: e.target.value});

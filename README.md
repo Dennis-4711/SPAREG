@@ -23,11 +23,11 @@ After filtering, the type of the element and the exact time series to be shown c
 
 ![use_case](https://user-images.githubusercontent.com/29735893/215329317-2d6d2eb8-853e-43a5-b20a-64e0c016e4ec.png)
 
-## Database and Data Model
+## Data Model
 
-The SPAREG software uses **MongoDB** as database management system. The database is hosted as a **MongoDB Atlas Cloud** database and has a single collection called "time_series". The time series documents have the following data model:
+The data model holds the data in JSON format within a MongoDB database.
 
-![data_model](https://user-images.githubusercontent.com/29735893/209586203-30d42f0c-1b6a-4b80-a231-a830a2af4de0.png)
+![data_model](https://user-images.githubusercontent.com/29735893/215329486-674b9937-89b6-4c6e-9df8-101c362b9126.png)
 
 * **series_id**: Primary key of a time series
 * **athlete_id**: Foreign key to refer to a specific athlete
@@ -38,6 +38,10 @@ The SPAREG software uses **MongoDB** as database management system. The database
 * **space**: Name of a space the time series does belong to.  
 
     *Example values: "Bodyweight in KG", "Scored Points", "Weight lifted in KG"*
+    
+* **targetValue**: A set integer value for the data points to be compared with. It is shown either as line in a selected graphs or as difference within a table.
+
+   *Example values: 15, 75, 80*
 
 * **vector**: The vector does hold the actual measurements and timestamps for a time series.  
 
@@ -60,6 +64,7 @@ The SPAREG software uses **MongoDB** as database management system. The database
   "athlete_id": 51,
   "discipline": "Basketball",
   "space": "Scored Points",
+  "targetValue": 12,
   "vector": [  
     { "timestamp": "17.07.22T10:29:11", "value": 8},  
     { "timestamp": "14.08.22T07:32:45", "value": 11},  

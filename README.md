@@ -17,13 +17,11 @@ and certain athlete id.
 
 ## Use Case Diagram
 
-![use_case](https://user-images.githubusercontent.com/29735893/209785826-6e5e9bee-8122-472b-8731-b5afa6b9d611.png)
+SPAREG offers the functionality to create reports for sport athletes. When a user wants to create such a report he or she **can** add an element. To make the selection of time series easier, the user can filter the available time series by discipline, space or athlete. Only the time series that match the chosen filters are being listed for the element.
 
-SPAREG offers the functionality to create reports for sport athletes. When a user wants to create such a report he or she **can** filter the available time series by discipline, space or athlete. This functionality allows easier selection of a time series.
+After filtering, the type of the element and the exact time series to be shown can be chosen. When a series is chosen, its data is displayed in the selected format and a target value is visualized. After adding an element to the report it is still possible to switch the type or time series and the elements will adapt dynamically. In addition, it is also possible to remove elements.
 
-In contrast, the selection a time series is **mandatory** to be able to add elements to the report. After a time series was selected, a user can add elements such as a text, table or a chart to the report. When doing so the properties of an element needs to be defined. Properties for example can be decisions like how many/what measurements from the selected time series are considered, if and how an average is being calculated and displayed or the layout of a table or chart.
-
-After adding elements to the report it is still possible to switch the time series and the elements will adapt dynamically. In addition, it is also possible to remove elements.
+![use_case](https://user-images.githubusercontent.com/29735893/215329317-2d6d2eb8-853e-43a5-b20a-64e0c016e4ec.png)
 
 ## Database and Data Model
 

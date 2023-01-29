@@ -15,7 +15,7 @@ and certain athlete id.
 * The report is a component of its own that initialized with set of athlete IDs and set of chart, table and text components.
 * Using the same principle develop a report page for admins which serves as dashboard with 3 types of charts and tables.
 
-## Use Case Diagram
+## Section 1: Use Case Diagram
 
 SPAREG offers the functionality to create reports for sport athletes. When a user wants to create such a report he or she **can** add an element. To make the selection of time series easier, the user can filter the available time series by discipline, space or athlete. Only the time series that match the chosen filters are being listed for the element.
 
@@ -23,7 +23,7 @@ After filtering, the type of the element and the exact time series to be shown c
 
 ![use_case](https://user-images.githubusercontent.com/29735893/215329317-2d6d2eb8-853e-43a5-b20a-64e0c016e4ec.png)
 
-## Data Model
+## Section 2: Data Model
 
 The data model holds the data in JSON format within a MongoDB database.
 
@@ -75,23 +75,7 @@ The data model holds the data in JSON format within a MongoDB database.
 }
 ```
 
-## API
-
-* GET /api/series: returns list of available time series
-    * (optional, query, integer) limit: limit amount of returned series
-    * (optional, query, integer) offset: offeset for returned time series
-    * (optional, query, array of integers) athletes[]: filter returned time series by athletes
-    * (optional, query, array of strings) disciplines[]: filter returned time series by disciplines
-    * (optional, query, array of strings) spaces[]: filter returned time series by spaces
-* GET /api/athletes: returns a list of available athletes
-    * (optional, query, integer) limit: limit amount of returned athletes
-    * (optional, query, integer) offset: offset for returned athletes
-* GET /api/disciplines: returns set of all available disciplines
-* GET /api/spaces: returns set of all available spaces
-
-To be continued...
-
-## GUI
+## Section 3: User Interface
 
 For the implementation of the interface we use **React** as our framework.
 When we create a report , we can filter different information by different messages such as: **displine**, **space** and **athlete_id**. By selecting the information we can get the corresponding time series number.
@@ -117,3 +101,18 @@ Once we display the chart, we can add some information to the chart below. We ca
 
 For a dynamic data generation report, we can create several different reports, and by clicking the Create Report button we can reselect a specific filter to generate a new report. Of course, we can always delete reports or text boxes that we don't need. Note: When we delete the first report, all of our new reports will be deleted.
 ![截屏2023-01-19 22 15 45](https://user-images.githubusercontent.com/72921749/213561549-cc6d4398-6093-4eee-a774-57af3a1629cf.png)
+
+## Section 4: Choice of Database
+
+## Section 5: Implementation of Data Model and Database
+
+## Section 6: API
+
+* GET /api/athletes: returns a list of available athletes
+* GET /api/disciplines: returns set of all available disciplines
+* GET /api/spaces: returns set of all available spaces
+* GET /api/time_series: returns list of available time series, data vector **not included**
+    * (optional, query, array of integers) athletes[]: filter returned time series by athletes
+    * (optional, query, array of strings) disciplines[]: filter returned time series by disciplines
+    * (optional, query, array of strings) spaces[]: filter returned time series by spaces
+* GET /api/time_series/{id}: returns all data about a single time series, data vactor **included**
